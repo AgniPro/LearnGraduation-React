@@ -1,0 +1,30 @@
+<html dir="ltr" lang="en">
+
+<head>
+  <title>Learn Graduation</title>
+
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
+    name="viewport" />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- <link rel="manifest" href="../manifest.json"> -->
+</head>
+
+<body class="MN-2 mobS hdMn bD" id="mainCont">
+  <!--for single page  MN-2 mobS hdMn bD onItm onPg drK -->
+  <!-- for post page   MN-2 mobS hdMn bD onItm onPs -->
+  <!-- oneGrd MN-2 mobS hdMn bD onIndx onMlt drK -->
+  <!--  home class oneGrd MN-2 mobS hdMn bD onIndx onHm -->
+  <script>
+    localStorage.getItem("mode") === "darkmode"
+      ? document.querySelector("#mainCont").classList.add("drK")
+      : document.querySelector("#mainCont").classList.remove("drK");
+  </script>
+  <div id="root"></div>
+  <script src="../js/script.js"></script>
+</body>
+
+</html>
