@@ -5,7 +5,7 @@ import Notification from "../component/Notification";
 import Sidebar from "../component/Sidebar";
 import Slider from "../component/Slider";
 import { Link } from "react-router-dom";
-import { date } from "../Contexts";
+import { api, date } from "../Contexts";
 
 function BlogHm(){
   useEffect(() => {
@@ -21,7 +21,7 @@ function BlogHm(){
     
     useEffect(() => {
       const homecontent = async () => {
-        const response = await fetch("http://localhost:3000/?skip="+skip, {
+        const response = await fetch(api+"?skip="+skip, {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,10 @@ function BlogHm(){
         if (!response.ok) {
           setHomedata(prevData => [...prevData, ...data]);
         } else {
-          setHomedata(prevData => [...prevData, ...data]); 
+          setHomedata(prevData => [...prevData, ...data]);
+          if (data.length==0) {
+            console.log("you reach the end");
+          }
         }
       };
       homecontent();
@@ -39,7 +42,6 @@ function BlogHm(){
     
     const handlescroll=()=>{
         setSkip(homedata.length);
-
     }
 
 

@@ -10,7 +10,7 @@ export const DarkMode = () => {
             "drK") : document.querySelector("#mainCont").classList.remove("drK")
   };
 
-export const handleLogin = async () => {
+export const handleLogin = async (setLoggedIn,setCookie) => {
     const username = document.getElementById("email").value;
     const password = document.getElementById("password").value;
   
@@ -20,15 +20,20 @@ export const handleLogin = async () => {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true,
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
     setLoggedIn(data.loggedIn);
+    setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000),secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
+    setCookie('accessToken', data.accessToken, { path: '/' , expires: new Date(Date.now() + 60*60*1000),secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
+    
   };
 
 export const handleGoogleLogin = () => {
     window.location.assign(api+"/auth/google");
   };
+  
 
 export const date=(pdate,udate)=> {
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];

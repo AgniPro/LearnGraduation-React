@@ -6,7 +6,7 @@ import Sidebar from "../component/Sidebar";
 import Mobilemenu from "../component/Mobilemenu";
 import Footer from "../component/Footer";
 import Pcomment from "../component/Pcomment";
-import { date } from "../Contexts";
+import { api, date } from "../Contexts";
 
 function Post() {
   useEffect(() => {
@@ -24,7 +24,7 @@ function Post() {
 
   useEffect(() => {
     const getpost = async () => {
-      const response = await fetch("http://localhost:3000/p/" + pid, {
+      const response = await fetch( api+"/p/" + pid, {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
