@@ -1,7 +1,8 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 
 function Header(props) {
+
   return (
     <>
       <header className="header" id="header">

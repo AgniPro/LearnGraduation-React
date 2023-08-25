@@ -2520,7 +2520,7 @@ details.ac .aC {
     padding: 12px 15px;
     outline: 0;
     border: 0;
-    border-radius: 3px;
+    border-radius: 12px;
     line-height: 20px;
     color: #fff;
     background: var(--linkB);
@@ -3390,6 +3390,7 @@ article.ntry.ps.post {
 
 .widget input[type=text],
 .widget input[type=email],
+.widget input[type=password],
 .widget textarea {
     display: block;
     width: 100%;
@@ -3405,6 +3406,7 @@ article.ntry.ps.post {
 
 .widget input[type=text]:hover,
 .widget input[type=email]:hover,
+.widget input[type=password]:hover,
 .widget textarea:hover {
     border-color: rgba(0, 0, 0, .42);
     background: #ececec
@@ -3412,6 +3414,7 @@ article.ntry.ps.post {
 
 .widget input[type=text]:focus,
 .widget input[type=email]:focus,
+.widget input[type=password]:focus,
 .widget textarea:focus,
 .widget input[data-text=fl],
 .widget textarea[data-text=fl] {

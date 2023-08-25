@@ -10,7 +10,7 @@ export const DarkMode = () => {
             "drK") : document.querySelector("#mainCont").classList.remove("drK")
   };
 
-export const handleLogin = async (setLoggedIn,setCookie) => {
+export const handleLogin = async (setLoggedIn,setCookie,cookies,setstatusCode, setMessage) => {
     const username = document.getElementById("email").value;
     const password = document.getElementById("password").value;
   
@@ -18,16 +18,35 @@ export const handleLogin = async (setLoggedIn,setCookie) => {
       method: "POST",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json","refreshToken":cookies.refreshToken
       },
       withCredentials: true,
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
     setLoggedIn(data.loggedIn);
-    setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000),secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
-    setCookie('accessToken', data.accessToken, { path: '/' , expires: new Date(Date.now() + 60*60*1000),secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
+    setstatusCode(response.status);
+    setMessage(data.message||"..." );
+    setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000),secure:true , sameSite:"none"});
+    setCookie('accessToken', data.accessToken, { path: '/' , expires: new Date(Date.now() + 60*60*1000),secure:true , sameSite:"none"});
     
+  };
+  export const register = async (setstatusCode, setMessage) => {
+    const username = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+  
+    const response = await fetch(api+"/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      withCredentials: true,
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await response.json();
+    setstatusCode(response.status);
+    setMessage(data.message||"...");
   };
 
 export const handleGoogleLogin = () => {

@@ -1,53 +1,74 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Mobilemenu from "../component/Mobilemenu";
-import Footer from "../component/Footer";
 import { api } from "../Contexts";
 
-function Compose(props) {
+function Edit(props) {
+  const [homedata, setHomedata] = useState([]);
   const [content, setContent] = useState();
+  const location = useLocation();
+  const url = location.pathname.split("/")[2];
+  useEffect(() => {
+    const homecontent = async () => {
+      const response = await fetch(api+"/p/" + url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setHomedata(data);
+      } else {
+        setHomedata(data);
+        setContent(data.content);
+      }
+    };
+
+    homecontent();
+  }, [url]);
 
   function savePost() {
-    let postTitle = document.getElementById('title').value;
+    let postTitle = document.getElementById("title").value;
     let postContent = content;
-    let url = document.getElementById("url").value;
     let disc = document.getElementById("disc").value;
     let pimg = document.getElementById("pimg").value;
-    if (!url) {
-      alert('Please enter a URL');
-      return;
-    }
-    fetch(api + "/", {
-      method: 'POST',
+    fetch(`${api}/${url}`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded', "accessToken": props.cookies.accessToken
+        "Content-Type": "application/x-www-form-urlencoded", "accessToken": props.cookies.accessToken
       },
       credentials: "include",
       body: new URLSearchParams({
-        url: url,
+        url: homedata.url,
         title: postTitle,
         disc: disc,
         pimg: pimg,
-        content: postContent
+        content: postContent,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          navigate("/dashboard");
+        }
       })
-    }).then(response => {
-      if (response.ok) {
-        window.location.href = '/dashboard';
-      }
-    }).catch(error => {
-      alert("Somthing Went Wrong")
-      console.error(error);
-    });
+      .catch((error) => {
+        alert("Somthing Went Wrong");
+        console.error(error);
+      });
   }
 
   function handleEditorChange(value, event) {
+    console.log("here is the current model value:", value);
     setContent(value)
   }
+
   const navigate = useNavigate();
   const back = () => {
     navigate(-1);
-  }
+  };
   return (
     <>
       <div className="blogCont">
@@ -77,23 +98,25 @@ function Compose(props) {
                           </a>
                           <meta content={1} itemProp="position" />
                         </div>
-                        <div className="tl" data-text="Make a New Post" />
+                        <div className="tl" data-text="CONTACT" />
                       </div>
+                      <h1 className="pTtl aTtl sml itm">
+                        <span>Compose</span>
+                      </h1>
                       <div className="pInr">
                         <div className="pEnt" id="postID-3760665364233">
                           <div className="pS post-body postBody" id="postBody">
-                            <button onClick={back} className="button ln" style={{ marginRight: "28px" }}>🔙</button>
+                            <button className="button ln" onClick={back} style={{marginRight:"28px"}}>🔙</button>
                             <button className="button ln" onClick={savePost}>
                               Save Post
                             </button>
                             <div className="container">
-                              <div className="jumbotron centered">
+                              <div className="jumbotron">
+                                <i className="fas fa-key fa-6x" />
+                                <h1 className="display-3">Update Post</h1>
+                                <p className="secret-text">All field are Important</p>
+                                <div id="url">{homedata.url}</div>
                                 <div className="form-group row">
-                                  <label htmlFor="url" >URL:</label>
-                                  <br />
-                                  <input required className="form-control " type="text" id="url" />
-                                  <br />
-                                  <br />
                                   <label htmlFor="title">Title:</label>
                                   <br />
                                   <input
@@ -101,12 +124,19 @@ function Compose(props) {
                                     className="form-control form-control-lg "
                                     type="text"
                                     id="title"
+                                    defaultValue={homedata.title}
                                   />
                                   <br />
                                   <br />
                                   <label htmlFor="disc">Disc:</label>
                                   <br />
-                                  <input required className="form-control " type="text" id="disc" />
+                                  <input
+                                    required
+                                    className="form-control "
+                                    type="text"
+                                    id="disc"
+                                    defaultValue={homedata.disc}
+                                  />
                                   <br />
                                   <br />
                                   <label htmlFor="pimg">Thumbnail:</label>
@@ -116,7 +146,7 @@ function Compose(props) {
                                     className="form-control"
                                     type="text"
                                     id="pimg"
-                                    defaultValue="https://1.bp.blogspot.com/-YurRRss-7Vs/YPF73EG4oqI/AAAAAAAACrY/EwlnBWaqUXEmxfhzm2hixuCV_edgZcYkQCPcBGAYYCw/s16000/learngraduation.png"
+                                    defaultValue={homedata.pimg}
                                   />
                                   <br />
                                   <br />
@@ -147,7 +177,6 @@ function Compose(props) {
       </div>
 
     </>
-
   );
 }
-export default Compose;
+export default Edit;

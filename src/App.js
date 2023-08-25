@@ -1,69 +1,83 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from 'react-cookie';
 import Header from "./component/Header";
 import Menu from "./component/Menu";
 import BlogHm from "./pages/BlogHm";
-import Login from "./pages/Login";
+import Login from "./auth/Login";
 import Dashboard from "./admin/Dashboard";
 import {
   DarkMode,
   ThemeContext,
   handleLogin,
   handleGoogleLogin,
-  date,
+  register,
+  api,
 } from "./Contexts";
 import Post from "./pages/Post";
 import Page from "./pages/Page";
+import FloatingMessage from "./component/Error";
+import Register from "./auth/Register";
+import Compose from "./admin/Compose";
+import Edit from "./admin/Edit";
+import Search  from "./pages/Search";
 
 function App() {
-  const api="http://localhost:3000";
-  const [cookies, setCookie, removeCookie] = useCookies(['refreshToken','accessToken']);
-
+  const [cookies, setCookie, removeCookie] = useCookies(['refreshToken', 'accessToken']);
   const [theme, setTheme] = useState("light");
-  const [loggedIn, setLoggedIn] = useState(false);
-
+  const [loggedIn, setLoggedIn] = useState(!!cookies.accessToken ||false);
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
-      setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000) ,secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
+      setCookie('refreshToken', token, { path: '/', expires: new Date(Date.now() + 24*60*60*1000), secure: true, sameSite: "none" });
+      checkAuth(token);
+    } else {
       checkAuth();
     }
-    const checkAuth = async () => {
-      const response = await fetch(api + "/check-auth", {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        withCredentials: true
-      });
-      const data = await response.json();
-      setLoggedIn(data.authenticated);
-      setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000) ,secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
-      setCookie('accessToken', data.accessToken, { path: '/' , expires: new Date(Date.now() + 60*60*1000),secure:true , sameSite:"none",domain:".learngraduation.onrender.com",httpOnly:true});
-    };
-    checkAuth();
   }, []);
-
-
-  const handleLogout = async () => {
-    await fetch(api+"/logout", {
+  
+  const checkAuth = async (token) => {
+    const response = await fetch(api + "/check-auth", {
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json", "refreshToken": token || cookies.refreshToken
+      },
+      withCredentials: true
+    });
+    if (response.status === 401) {
+      setLoggedIn(false);
+      removeCookie('refreshToken', { path: '/' });
+      removeCookie('accessToken', { path: '/' });
+    } else {
+      const data = await response.json();
+      setLoggedIn(data.authenticated);
+      setCookie('refreshToken', data.refreshToken, { path: '/', expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: "none" });
+      setCookie('accessToken', data.accessToken, { path: '/', expires: new Date(Date.now() + 60 * 60 * 1000), secure: true, sameSite: "none" });
+    }
+};
+
+  const handleLogout = async () => {
+    await fetch(api + "/logout", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json", "refreshToken": cookies.refreshToken
       },
       withCredentials: true
     });
     setLoggedIn(false);
-    removeCookie('refreshToken', { path: '/'});
-    removeCookie('accessToken', { path: '/'});
+    removeCookie('refreshToken', { path: '/' });
+    removeCookie('accessToken', { path: '/' });
   };
+
+  const [statusCode, setstatusCode] = useState(null);
+  const [message, setMessage] = useState(null);
 
   return (
     <ThemeContext.Provider value={theme} set={setTheme}>
       <Header darkMode={DarkMode} userstate={loggedIn} logout={handleLogout} googlelogin={handleGoogleLogin} />
+      <FloatingMessage statusCode={statusCode} message={message} />
       <div className="mainIn"><Menu />
         <Routes>
           <Route path="/">
@@ -74,36 +88,52 @@ function App() {
                 loggedIn ? (
                   <Navigate to="/" />
                 ) : (
-                    <Login
-                    login={() => handleLogin(setLoggedIn,setCookie)}
+                  <Login
+                    login={() => handleLogin(setLoggedIn, setCookie, cookies,setstatusCode, setMessage)}
                     googlelogin={handleGoogleLogin}
-                    setSessionData={()=> setSessionData(setSessionData)}
-                    />
+                    setSessionData={() => setSessionData(setSessionData)}
+                  />
                 )
               }
             />
-            <Route path="/page/:id" element={<Page/>}/>
-            <Route path="/p/:id" element={<Post/>}/>
-            <Route path="/dashboard" element={
-                loggedIn ? ( <Dashboard/>
+            <Route
+              path="/signup"
+              element={
+                loggedIn ? (
+                  <Navigate to="/" />
                 ) : (
-                  <Navigate to="/login" />
+                  <Register
+                    googlelogin={handleGoogleLogin} register={() => register(setstatusCode, setMessage)}
+                  />
                 )
               }
+            />
+            <Route path="/page/:id" element={<Page />} />
+            <Route path="/p/:id" element={<Post />} />
+            <Route path="/dashboard" element={
+              loggedIn ? (<Dashboard cookies={cookies} setstatusCode={setstatusCode} setMessage={setMessage}/>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
             />
             <Route path="/compose" element={
-                loggedIn ? (  <>Compose</>
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
+              loggedIn ? (<Compose cookies={cookies}/>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
             />
-            <Route path="/edit" element={
-                loggedIn ? (  <>Edit</>
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
+            <Route path="/edit/:id" element={
+              loggedIn ? (<Edit cookies={cookies}/>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+            />
+            <Route path="/search" element={
+              <Search/>
+            }
             />
 
             <Route path="*" element={"<Error />"} />
