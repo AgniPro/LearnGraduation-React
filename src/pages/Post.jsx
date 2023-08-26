@@ -7,6 +7,7 @@ import Mobilemenu from "../component/Mobilemenu";
 import Footer from "../component/Footer";
 import Pcomment from "../component/Pcomment";
 import { api, date } from "../Contexts";
+import InnerHTML from 'dangerously-set-html-content'
 
 function Post() {
   useEffect(() => {
@@ -40,6 +41,7 @@ function Post() {
       }
     };
     getpost();
+    console.log( "post content" +postcontent.content);
 
     const storedReadingTime = localStorage.getItem("readingTime");
     if (storedReadingTime) {
@@ -109,7 +111,8 @@ function Post() {
                         <div className="pAd">
                         </div>
                         <div className="pEnt" id={postcontent._id}>
-                          <div className="pS post-body postBody" id="postBody"  dangerouslySetInnerHTML={{ __html: postcontent.content }}/>
+                        {!postcontent.content ? <div>Loading...<img alt="Loading..." className="imgThm lazy loaded" /></div> : <InnerHTML className="pS post-body postBody" id="postBody" html={postcontent.content} />}
+                      
                           <div className="pAd">
                           </div>
                           <Pshare link={url} />
