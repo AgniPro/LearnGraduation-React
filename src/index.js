@@ -11,7 +11,7 @@ root.render(
       <input className="prfI hidden" id="offPrf" type="checkbox" />
       <input className="navI hidden" id="offNav" type="checkbox" />
       <div className="mainWrp">
-        <App />
+        <App/>
       </div>
     </div>
   </BrowserRouter>

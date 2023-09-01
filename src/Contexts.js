@@ -1,6 +1,3 @@
-import { createContext } from 'react';
-
-export const ThemeContext = createContext('dark');
 
 export const api ="http://localhost:3000";
 
@@ -29,7 +26,6 @@ export const handleLogin = async (setLoggedIn,setCookie,cookies,setstatusCode, s
     setMessage(data.message||"..." );
     setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000),secure:true , sameSite:"none"});
     setCookie('accessToken', data.accessToken, { path: '/' , expires: new Date(Date.now() + 60*60*1000),secure:true , sameSite:"none"});
-    
   };
   export const register = async (setstatusCode, setMessage) => {
     const username = document.getElementById("email").value;
@@ -57,11 +53,11 @@ export const handleGoogleLogin = () => {
 export const date=(pdate,udate)=> {
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
     if (pdate.toString() === udate.toString()) {
-        fdate= pdate; pubinfo= "publish :";
+        fdate= pdate; pubinfo= "Publish:";
     }else{
-        fdate=udate; pubinfo ="updated :"
+        fdate=udate; pubinfo ="Updated:"
     }
     var fdate ; var pubinfo ;
     var date = new Date(fdate);
-    return date = pubinfo + " " + date.getDate() + "-" + months[date.getMonth()] + "-" + date.getFullYear();
+    return date = pubinfo + " " + months[date.getMonth()] + " "+ date.getDate() + ", " + date.getFullYear();
 };

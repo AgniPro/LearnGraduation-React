@@ -6,7 +6,7 @@ import Sidebar from "../component/Sidebar";
 import Slider from "../component/Slider";
 import { Link } from "react-router-dom";
 import { api, date } from "../Contexts";
-import CardLoading from "../component/CardLodaing";
+import { CardLoading, PinndeLoading } from "../component/CardLodaing";
 
 function BlogHm() {
   useEffect(() => {
@@ -37,7 +37,7 @@ function BlogHm() {
       } else {
         setHomedata(prevData => [...prevData, ...data]);
         if (data.length == 0) {
-          document.getElementById("loadmorepost").setAttribute('data-text',"No More Post");
+          document.getElementById("loadmorepost").setAttribute('data-text', "No More Post");
         }
       }
     };
@@ -47,7 +47,7 @@ function BlogHm() {
   const handlescroll = () => {
     setSkip(homedata.length);
   }
-
+  const [pinnedPost, ...latestPosts] = homedata;
 
   return (
     <div className="blogCont">
@@ -67,6 +67,7 @@ function BlogHm() {
           {/*[ Main content ]*/}
           <main className="blogItm mainbar">
             <Slider />
+
             <div className="section" id="top-widget">
               <div className="widget HTML" data-version={2} id="HTML92">
                 <div className="widget-content">
@@ -80,63 +81,64 @@ function BlogHm() {
               >
                 <h2 className="title">Pinned Post</h2>
                 <div className="itemFt" role="feed">
-                  <article className="itm">
-                    <div className="iThmb pThmb">
-                      <a
-                        className="thmb"
-                        href="https://learngraduation.blogspot.com/2023/04/boolean-algebra-notes-pdf-download.html"
-                      >
-                        <img
-                          alt="Boolean Algebra Notes PDF 📑 Download"
-                          className="imgThm lazy loaded"
-                          data-src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUL77Rz203doYBEbISo2tXJp7ssL_-OinAuzqO2aTZcpt9Gnnxi_s39hmK3Zs26IR95LUc4T5Mn1glCefGwakqcm8fVoPjRcCMmXk5z385wsM206Kfj87s3h8qxuGYT5KPWsQ9YAvkgc_GXqFQYC2v_9bw2rIQbxSDy1QitbWkbxMOg1hYLJYW9Ve2/w600-h300-p-k-no-nu/Boolean%20Algebra.png"
-                          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUL77Rz203doYBEbISo2tXJp7ssL_-OinAuzqO2aTZcpt9Gnnxi_s39hmK3Zs26IR95LUc4T5Mn1glCefGwakqcm8fVoPjRcCMmXk5z385wsM206Kfj87s3h8qxuGYT5KPWsQ9YAvkgc_GXqFQYC2v_9bw2rIQbxSDy1QitbWkbxMOg1hYLJYW9Ve2/w600-h300-p-k-no-nu/Boolean%20Algebra.png"
-                          lazied="true"
-                        />
-                      </a>
-                    </div>
-                    <div className="iCtnt">
-                      <div className="pHdr pSml">
-                        <div className="pLbls" data-text="in">
+                  {pinnedPost ?
+                    <article className="itm">
+                      <div className="iThmb pThmb">
+                        <a
+                          className="thmb"
+                          href={"/p/" + pinnedPost.url}
+                        >
+                          <img
+                            alt={pinnedPost.title}
+                            className="imgThm lazy loaded"
+                            data-src={pinnedPost.image}
+                            src={pinnedPost.image}
+                            lazied="true"
+                          />
+                        </a>
+                      </div>
+                      <div className="iCtnt">
+                        <div className="pHdr">
+                          <div className="pLbls" data-text="in">
+                            <a
+                              aria-label="Bsc"
+                              data-text="Bsc"
+                              href="/search/label/Bsc"
+                              rel="tag"
+                            ></a>
+                            <a
+                              aria-label="Mathematics"
+                              data-text="Mathematics"
+                              href="/search/label/Mathematics"
+                              rel="tag"
+                            ></a>
+                          </div>
+                        </div>
+                        <h3 className="pTtl aTtl">
+                          <a href={"/p/" + pinnedPost.url}>
+                            {pinnedPost.title}
+                          </a>
+                        </h3>
+                        <div className="pSnpt">
+                          {pinnedPost.discription}
+                        </div>
+                        <div className="pInf">
+                          <time
+                            className="aTtmp pTtmp pbl"
+                            data-text={date(pinnedPost.createdAt, pinnedPost.updatedAt)}
+                            title={date(pinnedPost.createdAt, pinnedPost.updatedAt)}
+                          />
                           <a
-                            aria-label="Bsc"
-                            data-text="Bsc"
-                            href="https://learngraduation.blogspot.com/search/label/Bsc"
-                            rel="tag"
-                          ></a>
-                          <a
-                            aria-label="Mathematics"
-                            data-text="Mathematics"
-                            href="https://learngraduation.blogspot.com/search/label/Mathematics"
-                            rel="tag"
-                          ></a>
+                            aria-label="Read more"
+                            className="pJmp"
+                            data-text="Keep reading"
+                            href={"/p/" + pinnedPost?.url}
+                          />
                         </div>
                       </div>
-                      <h3 className="pTtl aTtl">
-                        <a href="https://learngraduation.blogspot.com/2023/04/boolean-algebra-notes-pdf-download.html">
-                          Boolean Algebra Notes PDF 📑 Download
-                        </a>
-                      </h3>
-                      <div className="pSnpt">
-                        Boolean Algebra Boolean algebra is the category of
-                        algebra in which the variable’s values are the
-                        truth values, true and false, ordinarily den…
-                      </div>
-                      <div className="pInf pSml">
-                        <time
-                          className="aTtmp pTtmp pbl"
-                          data-text
-                          title="Published:"
-                        />
-                        <a
-                          aria-label="Read more"
-                          className="pJmp"
-                          data-text="Keep reading"
-                          href="https://learngraduation.blogspot.com/2023/04/boolean-algebra-notes-pdf-download.html"
-                        />
-                      </div>
-                    </div>
-                  </article>
+                    </article>
+                    : <PinndeLoading />
+                  }
                 </div>
               </div>
             </div>
@@ -151,13 +153,12 @@ function BlogHm() {
                   <h3 className="title">Latest Posts</h3>
                 </div>
                 {isLoading ? <CardLoading /> : <>
-
                   <div className="blogPts">
-                    {homedata?.map((item) => (
+                    {latestPosts?.map((item) => (
                       <article key={item.url} className="ntry">
                         <div className="pThmb">
                           <Link className="thmb" to={"/p/" + item.url} >
-                            <img alt={item.title} className="imgThm lazy loaded" data-src={item.pimg} src={item.pimg} lazied="true" />
+                            <img alt={item.title} className="imgThm lazy loaded" data-src={item.image} src={item.image} lazied="true" />
                           </Link>
                           <div className="iFxd">
                             <a aria-label="Comments" className="cmnt" data-text="2" href="https://learngraduation.blogspot.com/fgh" role="button">
@@ -180,7 +181,7 @@ function BlogHm() {
                             </Link>
                           </h2>
                           <div className="pSnpt">
-                            {item.disc}
+                            {item.discription}
                           </div>
                           <div className="pInf pSml">
                             <time className="aTtmp pTtmp pbl" data-text={date(item.createdAt, item.updatedAt)} title={date(item.createdAt, item.updatedAt)} />
@@ -189,7 +190,6 @@ function BlogHm() {
                         </div>
                       </article>
                     ))}
-
                   </div>
                   <div className="blogPg" id="blogPager"><button aria-label="Load more posts" id="loadmorepost" className="jsLd" data-text="Load more posts" onClick={handlescroll} /></div>
                 </>}

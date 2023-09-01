@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Mobilemenu from "../component/Mobilemenu";
-import Footer from "../component/Footer";
 import { api } from "../Contexts";
 
 function Compose(props) {

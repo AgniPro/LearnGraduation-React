@@ -180,7 +180,7 @@ function Header(props) {
                         {props.userstate ? (
                           <>
                             <dl className="sInf">
-                              <dt className="sTxt">AgniPro</dt>
+                              <dt className="sTxt">{props.user}</dt>
                             </dl>
                             <br />
                             <dl className="sInf">

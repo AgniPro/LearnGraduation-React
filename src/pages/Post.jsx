@@ -9,7 +9,8 @@ import Pcomment from "../component/Pcomment";
 import { api, date } from "../Contexts";
 import InnerHTML from 'dangerously-set-html-content'
 
-function Post() {
+function Post(props) {
+
   useEffect(() => {
     const bodyClassList = document.body.classList;
     bodyClassList.add("onItm", "onPs");
@@ -17,31 +18,33 @@ function Post() {
       bodyClassList.remove("onItm", "onPs");
     };
   }, []);
-  const [postcontent, postData] = useState({ pimg: "", title: "", disc: "", content: "",createdAt:"",updatedAt:"" });
+
+  const [postcontent, postData] = useState({ pimg: "", title: "", disc: "", content: "", createdAt: "", updatedAt: "" });
+  const [isLiked, setIsLiked] = useState(false);
+
   const url = window.location.href;
   const pid = useLocation().pathname.split("/")[2];
   const navigate = useNavigate();
-  const pdate = date(postcontent.createdAt , postcontent.updatedAt);
+  const pdate = date(postcontent.createdAt, postcontent.updatedAt);
 
+  const getpost = async () => {
+    const response = await fetch(api + "/p/" + pid, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      postData({ title: errorText });
+      navigate("/error")
+    } else {
+      const postres = await response.json();
+      postData(postres);
+    }
+  };
   useEffect(() => {
-    const getpost = async () => {
-      const response = await fetch( api+"/p/" + pid, {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        const errorText = await response.text();
-        postData({ title: errorText });
-        navigate("/error")
-      } else {
-        const postres = await response.json();
-        postData(postres);
-      }
-    };
     getpost();
-    console.log( "post content" +postcontent.content);
 
     const storedReadingTime = localStorage.getItem("readingTime");
     if (storedReadingTime) {
@@ -50,9 +53,45 @@ function Post() {
       const time = Math.ceil(document.getElementById("article").innerText.trim().split(/\s+/).length / 225);
       document.getElementById("rdTime").innerText = time;
       localStorage.setItem("readingTime", time);
-    }
+    };
+
   }, [navigate, pid]);
 
+  useEffect(() => {
+    if (postcontent.likes?.includes(props.user + "@gmail.com")) {
+      setIsLiked(true);
+      const likeButton = document.querySelector('.like-button');
+      likeButton.focus();
+    }
+  }, [postcontent, props.user]); 
+
+  
+  const submitLike = async () => {
+    if(props.user){
+    setIsLiked(!isLiked);
+    
+    const likeresponse = await fetch(`${api}/p/${postcontent._id}/likes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded', "accessToken": props.cookies.accessToken
+      },
+      credentials: "include"
+
+    });
+    if (likeresponse.ok) {
+      const likemessage = await likeresponse.json();
+      console.log(likemessage);
+      await getpost();
+
+    } else {
+      console.log("Somthing Went Wrong");
+    }
+  }else{console.log("login to like");}
+  };
+
+  const cmntupdate = ()=>{
+    getpost();
+  }
 
   return (
     <>
@@ -81,7 +120,7 @@ function Post() {
                       </div>
                       <h1 className="pTtl aTtl sml itm">
                         <span>
-                        {postcontent.title}
+                          {postcontent.title}
                         </span>
                       </h1>
                       <div className="pDesc">{postcontent.disc}</div>
@@ -91,16 +130,36 @@ function Post() {
                           </div>
                         </div>
                         <div className="pNm">
-                          <bdi className="nm" data-text="AgniPro" data-write="Oleh" />
+                          <bdi className="nm" data-text={postcontent.author?.replace("@gmail.com", "")} data-write="Oleh" />
                           <div className="pDr">
                             <bdi className="pDt pIn">
-                              <time className="aTtmp pTtmp upd"  data-text={pdate}  title={pdate} />
+                              <time className="aTtmp pTtmp upd" data-text={pdate} title={pdate} />
                             </bdi>
                             <div className="pRd pIn"><bdi id="rdTime"></bdi> min read</div>
                           </div>
                         </div>
                         <div className="pCm">
-                          <div className="pIc">
+                          <div className="pIc" >
+                            <label htmlFor="like" className="cmnt" data-text={postcontent.likes?.length} onClick={submitLike}>
+                              <button className={`like-button ${isLiked ? 'isliked' : ''}`} name="like">
+                                <div className="like-wrapper" >
+                                  <svg className="heart" width={24} height={24} viewBox="0 0 24 24" >
+                                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+                                  </svg>
+                                  <div className="particles likea">
+                                    <div className="particle likeb" />
+                                    <div className="particle likec" />
+                                    <div className="particle liked" />
+                                    <div className="particle likee" />
+                                    <div className="particle likef" />
+                                    <div className="particle likeg" />
+                                  </div>
+                                </div>
+                              </button>
+                            </label>
+                            <label className="cmnt tIc" data-text={postcontent.comments?.length} htmlFor="forComments">
+                              <svg className="line" viewBox="0 0 24 24"><g transform="translate(2.000000, 2.000000)"><path d="M17.0710351,17.0698449 C14.0159481,20.1263505 9.48959549,20.7867004 5.78630747,19.074012 C5.23960769,18.8538953 1.70113357,19.8338667 0.933341969,19.0669763 C0.165550368,18.2990808 1.14639409,14.7601278 0.926307229,14.213354 C-0.787154393,10.5105699 -0.125888852,5.98259958 2.93020311,2.9270991 C6.83146881,-0.9756997 13.1697694,-0.9756997 17.0710351,2.9270991 C20.9803405,6.8359285 20.9723008,13.1680512 17.0710351,17.0698449 Z"></path></g></svg>
+                            </label>
                             <label className="sh tIc" htmlFor="forShare">
                               <svg className="line" viewBox="0 0 24 24"><path d="M92.30583,264.72053a3.42745,3.42745,0,0,1-.37,1.57,3.51,3.51,0,1,1,0-3.13995A3.42751,3.42751,0,0,1,92.30583,264.72053Z" transform="translate(-83.28571 -252.73452)" /><circle cx="18.48892" cy="5.49436" r="3.51099" /><circle cx="18.48892" cy="18.50564" r="3.51099" /><line className="cls-3" x1="12.53012" x2="8.65012" y1="8.476" y2="10.416" /><line className="cls-3" x1="12.53012" x2="8.65012" y1="15.496" y2="13.556" /></svg>
                             </label>
@@ -111,8 +170,8 @@ function Post() {
                         <div className="pAd">
                         </div>
                         <div className="pEnt" id={postcontent._id}>
-                        {!postcontent.content ? <div>Loading...<img alt="Loading..." className="imgThm lazy loaded" /></div> : <InnerHTML className="pS post-body postBody" id="postBody" html={postcontent.content} />}
-                      
+                          {!postcontent.content ? <div>Loading...<img alt="Loading..." className="imgThm lazy loaded" /></div> : <InnerHTML className="pS post-body postBody" id="postBody" html={postcontent.content} />}
+
                           <div className="pAd">
                           </div>
                           <Pshare link={url} />
@@ -124,7 +183,7 @@ function Post() {
                       <Share link={url} title={postcontent.title} img={postcontent.pimg} />
                       <div className="rPst" id="rPst">
                       </div>
-                      <Pcomment />
+                      <Pcomment pcomment={postcontent} cookies={props.cookies} loggedIn={props.loggedIn} user={props.user} cmntupdate={cmntupdate} />
                     </div>
                   </div>
                 </div></div>
