@@ -89,7 +89,7 @@ function Share(props) {
             <label aria-label="Close" className="c cl" htmlFor="forShare" />
           </div>
           <div className="sharePreview">
-            <div className="previewImg lazy" data-style={`background-image: url(${props.img})`} lazied="true" style={{backgroundImage: `url(${props.img})`}} />
+            <div className="previewImg lazy" data-style={`background-image: url(${props.image})`} lazied="true" style={{backgroundImage: `url(${props.image})`}} />
             <div className="previewContent">
               <div className="previewTitle" data-text={props.title} />
               <div className="previewLabel">

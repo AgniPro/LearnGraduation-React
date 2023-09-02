@@ -143,7 +143,7 @@ function (e, n) {
     e.defer = n = e.Defer, e.deferscript = n.js, e.deferstyle = n.css, e.deferimg = e.deferiframe = n.dom
 }(this);
 
-// script for like button
-let b = document.querySelector('button');
+// js for like button
+let b = document.querySelector('like-button');
 setTimeout(()=>b.focus(), 100);
-setTimeout(()=>b.blur(), 1000);
+ setTimeout(()=>b.blur(), 1000);

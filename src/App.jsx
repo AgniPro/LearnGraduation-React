@@ -83,7 +83,7 @@ function App() {
       <div className="mainIn"><Menu />
         <Routes>
           <Route path="/">
-            <Route index element={<BlogHm />} />
+            <Route index element={<BlogHm user={user} cookies={cookies} setstatusCode={setstatusCode}  setMessage={setMessage}/>} />
             <Route
               path="/login"
               element={
@@ -91,7 +91,7 @@ function App() {
                   <Navigate to="/" />
                 ) : (
                   <Login
-                    login={() => handleLogin(setLoggedIn, setCookie, cookies, setstatusCode, setMessage)}
+                    login={() => handleLogin(setLoggedIn, setCookie, cookies, setstatusCode, setMessage,setuser)}
                     googlelogin={handleGoogleLogin}
                     setSessionData={() => setSessionData(setSessionData)}
                   />
@@ -111,7 +111,7 @@ function App() {
               }
             />
             <Route path="/page/:id" element={<Page />} />
-            <Route path="/p/:id" element={<Post cookies={cookies} user={user} loggedIn={loggedIn} />} />
+            <Route path="/p/:id" element={<Post cookies={cookies} user={user} loggedIn={loggedIn} setstatusCode={setstatusCode}  setMessage={setMessage}/>} />
             <Route path="/dashboard" element={
               loggedIn ? (<Dashboard cookies={cookies} setstatusCode={setstatusCode} setMessage={setMessage} />
               ) : (

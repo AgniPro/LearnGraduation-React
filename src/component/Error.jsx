@@ -48,6 +48,7 @@ function FloatingMessage({ statusCode, message }) {
         color: 'white',
         padding: '10px',
         zIndex: '10',
+        borderRadius:"28px"
       }}
     >
       {displayMessage}

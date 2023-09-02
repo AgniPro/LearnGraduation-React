@@ -7,8 +7,9 @@ import Slider from "../component/Slider";
 import { Link } from "react-router-dom";
 import { api, date } from "../Contexts";
 import { CardLoading, PinndeLoading } from "../component/CardLodaing";
+import Like from "../component/Like";
 
-function BlogHm() {
+function BlogHm(props) {
   useEffect(() => {
     const bodyClassList = document.body.classList;
     bodyClassList.add('oneGrd', 'onIndx', 'onHm');
@@ -18,12 +19,9 @@ function BlogHm() {
   }, []);
 
   const [isLoading, setIsLoading] = useState(true);
-
   const [homedata, setHomedata] = useState([]);
   const [skip, setSkip] = useState(0);
-
-  useEffect(() => {
-    const homecontent = async () => {
+  const homecontent = async () => {
       const response = await fetch(api + "?skip=" + skip, {
         credentials: "include",
         headers: {
@@ -40,15 +38,33 @@ function BlogHm() {
           document.getElementById("loadmorepost").setAttribute('data-text', "No More Post");
         }
       }
-    };
+  };
+  useEffect(() => {
     homecontent();
   }, [skip]);
+  const [pinnedPost, ...latestPosts] = homedata;
 
   const handlescroll = () => {
     setSkip(homedata.length);
   }
-  const [pinnedPost, ...latestPosts] = homedata;
+  
+  const setlike = (likedPost) => {
+    const useremail =props.user+"@gmail.com";
+    setHomedata(prevData =>
+      prevData.map(post =>
+        post._id === likedPost
+          ? {
+              ...post,
+              likes: post.likes.includes(useremail)
+                ? post.likes.filter(email => email !== useremail)
+                : [...post.likes, useremail],
+            }
+          : post
+      )
+    );
+  };
 
+  
   return (
     <div className="blogCont">
       <div className="secIn">
@@ -82,7 +98,7 @@ function BlogHm() {
                 <h2 className="title">Pinned Post</h2>
                 <div className="itemFt" role="feed">
                   {pinnedPost ?
-                    <article className="itm">
+                    <article key={pinnedPost._id} className="itm">
                       <div className="iThmb pThmb">
                         <a
                           className="thmb"
@@ -155,15 +171,20 @@ function BlogHm() {
                 {isLoading ? <CardLoading /> : <>
                   <div className="blogPts">
                     {latestPosts?.map((item) => (
-                      <article key={item.url} className="ntry">
+                      <article key={item._id} className="ntry">
                         <div className="pThmb">
                           <Link className="thmb" to={"/p/" + item.url} >
                             <img alt={item.title} className="imgThm lazy loaded" data-src={item.image} src={item.image} lazied="true" />
                           </Link>
+                          
                           <div className="iFxd">
-                            <a aria-label="Comments" className="cmnt" data-text="2" href="https://learngraduation.blogspot.com/fgh" role="button">
+                          <Like postcontent={item} user={props.user} cookies={props.cookies} likeadd={() => setlike(item._id)} setstatusCode={props.setstatusCode} setMessage={props.setMessage}/>
+
+                            {item.comments.length?
+                            <Link aria-label="Comments" className="cmnt" data-text={item.comments.length} to={"/p/" + item.url+"#comments"} role="button">
                               <svg className="line" viewBox="0 0 24 24"><g transform="translate(2.000000, 2.000000)"><path d="M17.0710351,17.0698449 C14.0159481,20.1263505 9.48959549,20.7867004 5.78630747,19.074012 C5.23960769,18.8538953 1.70113357,19.8338667 0.933341969,19.0669763 C0.165550368,18.2990808 1.14639409,14.7601278 0.926307229,14.213354 C-0.787154393,10.5105699 -0.125888852,5.98259958 2.93020311,2.9270991 C6.83146881,-0.9756997 13.1697694,-0.9756997 17.0710351,2.9270991 C20.9803405,6.8359285 20.9723008,13.1680512 17.0710351,17.0698449 Z"></path></g></svg>
-                            </a>
+                            </Link> 
+                            :<></>}
                           </div>
                         </div>
                         <div className="pCntn">

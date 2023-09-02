@@ -7,7 +7,7 @@ export const DarkMode = () => {
             "drK") : document.querySelector("#mainCont").classList.remove("drK")
   };
 
-export const handleLogin = async (setLoggedIn,setCookie,cookies,setstatusCode, setMessage) => {
+export const handleLogin = async (setLoggedIn,setCookie,cookies,setstatusCode, setMessage,setuser) => {
     const username = document.getElementById("email").value;
     const password = document.getElementById("password").value;
   
@@ -22,6 +22,7 @@ export const handleLogin = async (setLoggedIn,setCookie,cookies,setstatusCode, s
     });
     const data = await response.json();
     setLoggedIn(data.loggedIn);
+    setuser(data.user);
     setstatusCode(response.status);
     setMessage(data.message||"..." );
     setCookie('refreshToken', data.refreshToken, { path: '/' , expires: new Date(Date.now() + 24*60*60*1000),secure:true , sameSite:"none"});
