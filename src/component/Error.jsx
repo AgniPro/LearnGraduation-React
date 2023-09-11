@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-function FloatingMessage({ statusCode, message }) {
+function FloatingMessage({ statusCode, message, setMessage }) {
   const [displayMessage, setDisplayMessage] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('');
 
@@ -15,14 +15,17 @@ function FloatingMessage({ statusCode, message }) {
           setBackgroundColor('red');
           break;
         case 500:
-        setBackgroundColor('red');
-        break;
+          setBackgroundColor('red');
+          break;
+        case 400:
+          setBackgroundColor('orange');
+          break;  
         case 404:
           setBackgroundColor('#ff404');
           break;
         case 409:
           setBackgroundColor('red');
-        break;
+          break;
         case 'notification':
           setBackgroundColor('blue');
           break;
@@ -31,10 +34,11 @@ function FloatingMessage({ statusCode, message }) {
       }
       const timeoutId = setTimeout(() => {
         setDisplayMessage('');
+        setMessage('');
       }, 3000);
       return () => clearTimeout(timeoutId);
     }
-  }, [message, statusCode]);
+  }, [message, statusCode, setMessage]);
 
   if (!displayMessage) return null;
 
@@ -45,10 +49,10 @@ function FloatingMessage({ statusCode, message }) {
         bottom: '100px',
         right: '100px',
         backgroundColor,
-        color: 'white',
+        color: 'inherit',
         padding: '10px',
         zIndex: '10',
-        borderRadius:"28px"
+        borderRadius: '28px'
       }}
     >
       {displayMessage}

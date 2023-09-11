@@ -33,8 +33,8 @@ function Edit(props) {
   function savePost() {
     let postTitle = document.getElementById("title").value;
     let postContent = content;
-    let disc = document.getElementById("disc").value;
-    let pimg = document.getElementById("pimg").value;
+    let discription = document.getElementById("disc").value;
+    let image = document.getElementById("pimg").value;
     fetch(`${api}/${url}`, {
       method: "PUT",
       headers: {
@@ -44,9 +44,11 @@ function Edit(props) {
       body: new URLSearchParams({
         url: homedata.url,
         title: postTitle,
-        disc: disc,
-        pimg: pimg,
+        image: image,
+        discription: discription,
         content: postContent,
+        categories:["learngraduation"],
+        tags:["B.Sc"]
       }),
     })
       .then((response) => {
@@ -61,7 +63,6 @@ function Edit(props) {
   }
 
   function handleEditorChange(value, event) {
-    console.log("here is the current model value:", value);
     setContent(value)
   }
 
@@ -104,7 +105,7 @@ function Edit(props) {
                         <span>Compose</span>
                       </h1>
                       <div className="pInr">
-                        <div className="pEnt" id="postID-3760665364233">
+                        <div className="pEnt" id="ID-3760665364233">
                           <div className="pS post-body postBody" id="postBody">
                             <button className="button ln" onClick={back} style={{marginRight:"28px"}}>🔙</button>
                             <button className="button ln" onClick={savePost}>
@@ -157,7 +158,7 @@ function Edit(props) {
                                     width="100%"
                                     theme="vs-dark"
                                     defaultLanguage="html"
-                                    defaultValue={content}
+                                    value={content}
                                     onChange={handleEditorChange}
                                   />
                                 </div>

@@ -79,7 +79,7 @@ function App() {
   return (
     <>
       <Header darkMode={DarkMode} userstate={loggedIn} logout={handleLogout} user={user} googlelogin={handleGoogleLogin} />
-      <FloatingMessage statusCode={statusCode} message={message} />
+      <FloatingMessage statusCode={statusCode} message={message} setMessage={setMessage} />
       <div className="mainIn"><Menu />
         <Routes>
           <Route path="/">

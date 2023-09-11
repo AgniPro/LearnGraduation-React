@@ -2731,9 +2731,9 @@ article.ntry {
     box-shadow: var(--sdoa);
     border-radius: 12px;
 }
-
 article.ntry.ps.post {
     box-shadow: none !important;
+    background: none !important;
     border-radius: 0px;
 }
 
@@ -4761,7 +4761,7 @@ a.prfL:hover {
     }
 
     .pInf.ps .pTtmp::after {
-        content: attr(data-time)
+        content: attr(data-text)
     }
 
     .pInf.ps .pDr {
@@ -5424,6 +5424,9 @@ a.prfL:hover {
 .drK .button {
     color: var(--darkT)
 }
+.drK article.ntry {
+    background-color: #202124;
+}
 
 .drK .admPs,
 .drK .dlBox,
@@ -5645,13 +5648,10 @@ a.prfL:hover {
     -webkit-transition: fill var(--duration) var(--easing);
     transition: fill var(--duration) var(--easing);
   }
-  .isliked .heart > path{
+  .like-active .heart > path {
     fill: var(--color-heart);
   }
-  .like-button:focus .heart > path {
-    fill: var(--color-heart);
-  }
-  .like-button:focus .heart {
+  .like-active .heart {
     -webkit-animation: heart-bounce var(--duration) var(--easing);
             animation: heart-bounce var(--duration) var(--easing);
   }
@@ -5700,7 +5700,7 @@ a.prfL:hover {
     -webkit-transition: all var(--duration) var(--easing);
     transition: all var(--duration) var(--easing);
   }
-  .like-button:focus .particle {
+  .like-active .particle {
     -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
             animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
   }
@@ -5740,10 +5740,11 @@ a.prfL:hover {
   }
   
   /* Reset the animation when clicking again! */
-  .like-button:focus {
+  .like-active {
     pointer-events: none;
     cursor: normal;
   }
+
  .likea{
     --total-particles: 6
  }

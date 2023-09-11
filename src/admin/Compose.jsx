@@ -5,14 +5,16 @@ import Mobilemenu from "../component/Mobilemenu";
 import { api } from "../Contexts";
 
 function Compose(props) {
-  const [content, setContent] = useState();
+  const [content, setContent] = useState(null);
 
   function savePost() {
     let postTitle = document.getElementById('title').value;
     let postContent = content;
     let url = document.getElementById("url").value;
-    let disc = document.getElementById("disc").value;
-    let pimg = document.getElementById("pimg").value;
+    let discription = document.getElementById("disc").value;
+    let image = document.getElementById("image").value;
+    let tags = document.getElementById("tags").value;
+    let categories = document.getElementById("categories").value;
     if (!url) {
       alert('Please enter a URL');
       return;
@@ -26,9 +28,11 @@ function Compose(props) {
       body: new URLSearchParams({
         url: url,
         title: postTitle,
-        disc: disc,
-        pimg: pimg,
-        content: postContent
+        discription: discription,
+        image: image,
+        content: postContent,
+        categories: [categories],
+        tags: [tags]
       })
     }).then(response => {
       if (response.ok) {
@@ -79,7 +83,7 @@ function Compose(props) {
                         <div className="tl" data-text="Make a New Post" />
                       </div>
                       <div className="pInr">
-                        <div className="pEnt" id="postID-3760665364233">
+                        <div className="pEnt" id="ID-3764233">
                           <div className="pS post-body postBody" id="postBody">
                             <button onClick={back} className="button ln" style={{ marginRight: "28px" }}>🔙</button>
                             <button className="button ln" onClick={savePost}>
@@ -88,45 +92,53 @@ function Compose(props) {
                             <div className="container">
                               <div className="jumbotron centered">
                                 <div className="form-group row">
-                                  <label htmlFor="url" >URL:</label>
-                                  <br />
-                                  <input required className="form-control " type="text" id="url" />
-                                  <br />
-                                  <br />
-                                  <label htmlFor="title">Title:</label>
-                                  <br />
-                                  <input
-                                    required
-                                    className="form-control form-control-lg "
-                                    type="text"
-                                    id="title"
-                                  />
-                                  <br />
-                                  <br />
-                                  <label htmlFor="disc">Disc:</label>
-                                  <br />
-                                  <input required className="form-control " type="text" id="disc" />
-                                  <br />
-                                  <br />
-                                  <label htmlFor="pimg">Thumbnail:</label>
-                                  <br />
-                                  <input
-                                    required
-                                    className="form-control"
-                                    type="text"
-                                    id="pimg"
-                                    defaultValue="https://1.bp.blogspot.com/-YurRRss-7Vs/YPF73EG4oqI/AAAAAAAACrY/EwlnBWaqUXEmxfhzm2hixuCV_edgZcYkQCPcBGAYYCw/s16000/learngraduation.png"
-                                  />
-                                  <br />
-                                  <br />
-                                  <label htmlFor="editor">Content:</label>
-                                  <br />
+                                  <div>
+                                    <label htmlFor="url" >URL:</label>
+                                    <br />
+                                    <input required className="form-control " name="url" type="text" id="url" />
+                                    <br />
+
+                                    <label htmlFor="title">Title:</label>
+                                    <br />
+                                    <input
+                                      required
+                                      className="form-control form-control-lg "
+                                      type="text"
+                                      name="title"
+                                      id="title"
+                                    />
+                                    <br />
+                                    <label htmlFor="discription">Discription:</label>
+                                    <br />
+                                    <input required className="form-control " name="discription" type="text" id="discription" />
+                                    <br />
+                                    <label htmlFor="image">Thumbnail:</label>
+                                    <br />
+                                    <input
+                                      required
+                                      className="form-control"
+                                      type="text"
+                                      id="image"
+                                      name="thumbnail"
+                                      defaultValue="https://1.bp.blogspot.com/-YurRRss-7Vs/YPF73EG4oqI/AAAAAAAACrY/EwlnBWaqUXEmxfhzm2hixuCV_edgZcYkQCPcBGAYYCw/s16000/learngraduation.png"
+                                    />
+                                    <br />
+                                    <div style={{display: "flex" ,alignItems:"center"}}>
+                                      <label htmlFor="categories">Categories:</label>
+                                      <input type="text" className="form-control" id="categories" name="categories" />
+                                      <br />
+                                      <label htmlFor="tags">Tags:</label>
+                                      <input type="text" className="form-control" id="tags" name="tags" /></div>
+                                    <br />
+                                    <label htmlFor="editor">Content:</label>
+                                    <br />
+                                  </div>
                                   <Editor
                                     height="80vh"
                                     width="100%"
                                     theme="vs-dark"
                                     defaultLanguage="html"
-                                    defaultValue={content}
+                                    value={content}
                                     onChange={handleEditorChange}
                                   />
                                 </div>

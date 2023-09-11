@@ -60,7 +60,7 @@ function Post(props) {
   const cmntupdate = ()=>{
     getpost();
   }
-
+  const { pubinfo, month, year } = date(postcontent?.createdAt,postcontent?.updatedAt);
   return (
     <>
       <div className="blogCont">
@@ -101,7 +101,7 @@ function Post(props) {
                           <bdi className="nm" data-text={postcontent.author?.replace("@gmail.com", "")} />
                           <div className="pDr">
                             <bdi className="pDt pIn">
-                              <time className="aTtmp pTtmp upd" data-text={pdate} title={pdate} />
+                              <time className="aTtmp pTtmp upd" data-date={pubinfo} data-text={`${month}, ${year}`} dateTime={postcontent.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
                             </bdi>
                             <div className="pRd pIn"><bdi id="rdTime"></bdi> min read</div>
                           </div>
