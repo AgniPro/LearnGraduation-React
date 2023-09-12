@@ -33,22 +33,26 @@ function Edit(props) {
   function savePost() {
     let postTitle = document.getElementById("title").value;
     let postContent = content;
-    let discription = document.getElementById("disc").value;
-    let image = document.getElementById("pimg").value;
+    let discription = document.getElementById("discription").value;
+    let image = document.getElementById("image").value;
+    let tags = document.getElementById("tags").value;
+    let categories = document.getElementById("categories").value;
+
     fetch(`${api}/${url}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded", "accessToken": props.cookies.accessToken
+        "Content-Type": "application/json", 
+        "accessToken": props.cookies.accessToken
       },
       credentials: "include",
-      body: new URLSearchParams({
+      body: JSON.stringify({
         url: homedata.url,
         title: postTitle,
         image: image,
         discription: discription,
         content: postContent,
-        categories:["learngraduation"],
-        tags:["B.Sc"]
+        categories: categories,
+        tags: tags
       }),
     })
       .then((response) => {
@@ -61,6 +65,8 @@ function Edit(props) {
         console.error(error);
       });
   }
+
+
 
   function handleEditorChange(value, event) {
     setContent(value)
@@ -128,17 +134,15 @@ function Edit(props) {
                                     defaultValue={homedata.title}
                                   />
                                   <br />
-                                  <br />
-                                  <label htmlFor="disc">Disc:</label>
+                                  <label htmlFor="disc">Discription:</label>
                                   <br />
                                   <input
                                     required
                                     className="form-control "
                                     type="text"
-                                    id="disc"
-                                    defaultValue={homedata.disc}
+                                    id="discription"
+                                    defaultValue={homedata.discription}
                                   />
-                                  <br />
                                   <br />
                                   <label htmlFor="pimg">Thumbnail:</label>
                                   <br />
@@ -146,10 +150,16 @@ function Edit(props) {
                                     required
                                     className="form-control"
                                     type="text"
-                                    id="pimg"
-                                    defaultValue={homedata.pimg}
+                                    id="image"
+                                    defaultValue={homedata.image}
                                   />
                                   <br />
+                                  <div style={{display: "flex" ,alignItems:"center"}}>
+                                      <label htmlFor="categories">Categories:</label>
+                                      <input type="text" className="form-control" id="categories" defaultValue={homedata.categories} name="categories" />
+                                      <br />
+                                      <label htmlFor="tags">Tags:</label>
+                                      <input type="text" className="form-control" id="tags" defaultValue={homedata.tags} name="tags" /></div>
                                   <br />
                                   <label htmlFor="editor">Content:</label>
                                   <br />

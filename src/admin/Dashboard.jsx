@@ -77,7 +77,9 @@ function Dashboard(props) {
 
                     {error && <div className="error">{error}</div>}
 
-                    {homedata?.map((item) => (
+                    {homedata?.map((item) => {
+                      const { pubinfo, month, year } = date(item.createdAt,item.updatedAt);
+                      return(
                       <article key={item._id} className="ntry" style={{
                         display: "flex", margin: " 28px 00 28px"
                       }}>
@@ -106,12 +108,12 @@ function Dashboard(props) {
                           <Link className="button" to={"/edit/" + item.url}> 📝</Link>
 
                           <div className="pInf pSml">
-                            <time className="aTtmp pTtmp pbl" data-text={date(item.createdAt, item.updatedAt)} title={date(item.createdAt, item.updatedAt)} />
+                            <time className="aTtmp pTtmp pbl" data-text={`${month}, ${year}`} dateTime={item.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
 
                           </div>
                         </div>
                       </article>
-                    ))}
+                    )})}
 
 
                   </div>

@@ -11,9 +11,12 @@ function Compose(props) {
     let postTitle = document.getElementById('title').value;
     let postContent = content;
     let url = document.getElementById("url").value;
-    let discription = document.getElementById("disc").value;
+    let discription = document.getElementById("discription").value;
     let image = document.getElementById("image").value;
     let tags = document.getElementById("tags").value;
+    let tagsArray = tags.split(',').map(tag => tag.trim());
+    console.log(tagsArray);
+
     let categories = document.getElementById("categories").value;
     if (!url) {
       alert('Please enter a URL');
@@ -31,8 +34,8 @@ function Compose(props) {
         discription: discription,
         image: image,
         content: postContent,
-        categories: [categories],
-        tags: [tags]
+        categories: categories,
+        tags: tags
       })
     }).then(response => {
       if (response.ok) {
