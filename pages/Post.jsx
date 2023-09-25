@@ -9,6 +9,7 @@ import Pcomment from "../component/Pcomment";
 import { api, date } from "../Contexts";
 import InnerHTML from 'dangerously-set-html-content'
 import Like from "../component/Like";
+import {Helmet} from "react-helmet";
 
 function Post(props) {
 
@@ -60,9 +61,34 @@ function Post(props) {
   const cmntupdate = ()=>{
     getpost();
   }
-
+  const { pubinfo, month, year } = date(postcontent?.createdAt,postcontent?.updatedAt);
   return (
     <>
+    <Helmet >
+
+<title>{postcontent.title}</title>
+
+<link href={url} rel='canonical'/>
+
+<meta content={postcontent.discription} name='description'/>
+ <meta content={postcontent.keyword ||'Learn Graduation, , learn graduation, learngraduation, learn-graduation ,learn%20graduation'} name='keywords'/>
+
+<meta content={postcontent.title} property='og:title'/>
+<meta content={url} property='og:url'/>
+<meta content='Learn Graduation' property='og:site_name'/>
+<meta content='website' property='og:type'/>
+<meta content={postcontent.discription} property='og:description'/>
+<meta content={postcontent.title} property='og:image:alt'/>
+<meta content={postcontent.image} property='og:image'/>
+
+<meta content={postcontent.title} name='twitter:title'/>
+<meta content={postcontent.url} name='twitter:url'/>
+<meta content={postcontent.discription} name='twitter:description'/>
+<meta content='summary_large_image' name='twitter:card'/>
+<meta content={postcontent.title} name='twitter:image:alt'/>
+<meta content={postcontent.image} name='twitter:image:src'/>
+
+    </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <Notification />
@@ -91,7 +117,7 @@ function Post(props) {
                           {postcontent.title}
                         </span>
                       </h1>
-                      <div className="pDesc">{postcontent.disc}</div>
+                      <div className="pDesc">{postcontent.discription}</div>
                       <div className="pInf pSml ps">
                         <div className="pIm">
                           <div className="im lazy lazy loaded" data-style="background-image: url(//blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9Ho1_bZ2AEcnrygrJBhFE0R-rvh6flix_59-Kltc3pCjfbW7JQ5wShJHHGZOHVDqh0QG_rYmB59_EQapncVmo4Kzrn7AnyAoU79Yn6mPj1H20fDhTK3ZW9CQr73mG7Q/w40-h40-p-k-no-nu/logo.png)" lazied="true" style={{ backgroundImage: 'url("//blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9Ho1_bZ2AEcnrygrJBhFE0R-rvh6flix_59-Kltc3pCjfbW7JQ5wShJHHGZOHVDqh0QG_rYmB59_EQapncVmo4Kzrn7AnyAoU79Yn6mPj1H20fDhTK3ZW9CQr73mG7Q/w40-h40-p-k-no-nu/logo.png")' }}>
@@ -101,7 +127,7 @@ function Post(props) {
                           <bdi className="nm" data-text={postcontent.author?.replace("@gmail.com", "")} />
                           <div className="pDr">
                             <bdi className="pDt pIn">
-                              <time className="aTtmp pTtmp upd" data-text={pdate} title={pdate} />
+                              <time className="aTtmp pTtmp upd" data-date={pubinfo} data-text={`${month}, ${year}`} dateTime={postcontent.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
                             </bdi>
                             <div className="pRd pIn"><bdi id="rdTime"></bdi> min read</div>
                           </div>

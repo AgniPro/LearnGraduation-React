@@ -112,21 +112,21 @@ function App() {
             />
             <Route path="/page/:id" element={<Page />} />
             <Route path="/p/:id" element={<Post cookies={cookies} user={user} loggedIn={loggedIn} setstatusCode={setstatusCode}  setMessage={setMessage}/>} />
-            <Route path="/dashboard" element={
+            <Route path="admin/dashboard" element={
               loggedIn ? (<Dashboard cookies={cookies} setstatusCode={setstatusCode} setMessage={setMessage} />
               ) : (
                 <Navigate to="/login" />
               )
             }
             />
-            <Route path="/compose" element={
+            <Route path="admin/compose" element={
               loggedIn ? (<Compose cookies={cookies} />
               ) : (
                 <Navigate to="/login" />
               )
             }
             />
-            <Route path="/edit/:id" element={
+            <Route path="admin/edit/:id" element={
               loggedIn ? (<Edit cookies={cookies} />
               ) : (
                 <Navigate to="/login" />

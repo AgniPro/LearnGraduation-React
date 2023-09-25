@@ -21,6 +21,7 @@ function BlogHm(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [homedata, setHomedata] = useState([]);
   const [skip, setSkip] = useState(0);
+  
   const homecontent = async () => {
       const response = await fetch(api + "?skip=" + skip, {
         credentials: "include",
@@ -47,7 +48,6 @@ function BlogHm(props) {
   const handlescroll = () => {
     setSkip(homedata.length);
   }
-  
   const setlike = (likedPost) => {
     const useremail =props.user+"@gmail.com";
     setHomedata(prevData =>
@@ -64,7 +64,8 @@ function BlogHm(props) {
     );
   };
 
-  
+  const { pubinfo, month, year } = date(pinnedPost?.createdAt,pinnedPost?.updatedAt);
+
   return (
     <div className="blogCont">
       <div className="secIn">
@@ -79,7 +80,7 @@ function BlogHm(props) {
             </div>
           </div>
         </div>
-        <div className="blogM">
+        <div className="blogM"> 
           {/*[ Main content ]*/}
           <main className="blogItm mainbar">
             <Slider />
@@ -100,9 +101,9 @@ function BlogHm(props) {
                   {pinnedPost ?
                     <article key={pinnedPost._id} className="itm">
                       <div className="iThmb pThmb">
-                        <a
+                        <Link
                           className="thmb"
-                          href={"/p/" + pinnedPost.url}
+                          to={"/p/" + pinnedPost.url}
                         >
                           <img
                             alt={pinnedPost.title}
@@ -111,7 +112,7 @@ function BlogHm(props) {
                             src={pinnedPost.image}
                             lazied="true"
                           />
-                        </a>
+                        </Link>
                       </div>
                       <div className="iCtnt">
                         <div className="pHdr">
@@ -131,24 +132,20 @@ function BlogHm(props) {
                           </div>
                         </div>
                         <h3 className="pTtl aTtl">
-                          <a href={"/p/" + pinnedPost.url}>
+                          <Link to={"/p/" + pinnedPost.url}>
                             {pinnedPost.title}
-                          </a>
+                          </Link>
                         </h3>
                         <div className="pSnpt">
                           {pinnedPost.discription}
                         </div>
                         <div className="pInf">
-                          <time
-                            className="aTtmp pTtmp pbl"
-                            data-text={date(pinnedPost.createdAt, pinnedPost.updatedAt)}
-                            title={date(pinnedPost.createdAt, pinnedPost.updatedAt)}
-                          />
-                          <a
+                          <time className="aTtmp pTtmp pbl" data-text={`${month}, ${year}`} dateTime={pinnedPost.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
+                          <Link
                             aria-label="Read more"
                             className="pJmp"
                             data-text="Keep reading"
-                            href={"/p/" + pinnedPost?.url}
+                            to={"/p/" + pinnedPost.url}
                           />
                         </div>
                       </div>
@@ -170,7 +167,9 @@ function BlogHm(props) {
                 </div>
                 {isLoading ? <CardLoading /> : <>
                   <div className="blogPts">
-                    {latestPosts?.map((item) => (
+                    {latestPosts?.map((item) => {
+                      const { pubinfo, month, year } = date(item.createdAt,item.updatedAt);
+                      return(
                       <article key={item._id} className="ntry">
                         <div className="pThmb">
                           <Link className="thmb" to={"/p/" + item.url} >
@@ -205,12 +204,12 @@ function BlogHm(props) {
                             {item.discription}
                           </div>
                           <div className="pInf pSml">
-                            <time className="aTtmp pTtmp pbl" data-text={date(item.createdAt, item.updatedAt)} title={date(item.createdAt, item.updatedAt)} />
+                            <time className="aTtmp pTtmp pbl" data-text={`${month}, ${year}`} dateTime={item.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
                             <Link aria-label="Read more" className="pJmp" data-text="Keep reading" to={"/p/" + item.url}></Link>
                           </div>
                         </div>
                       </article>
-                    ))}
+                    )})}
                   </div>
                   <div className="blogPg" id="blogPager"><button aria-label="Load more posts" id="loadmorepost" className="jsLd" data-text="Load more posts" onClick={handlescroll} /></div>
                 </>}

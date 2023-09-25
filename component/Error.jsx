@@ -17,6 +17,9 @@ function FloatingMessage({ statusCode, message, setMessage }) {
         case 500:
           setBackgroundColor('red');
           break;
+        case 400:
+          setBackgroundColor('orange');
+          break;  
         case 404:
           setBackgroundColor('#ff404');
           break;
@@ -46,7 +49,7 @@ function FloatingMessage({ statusCode, message, setMessage }) {
         bottom: '100px',
         right: '100px',
         backgroundColor,
-        color: 'white',
+        color: 'inherit',
         padding: '10px',
         zIndex: '10',
         borderRadius: '28px'

@@ -188,7 +188,7 @@ function Header(props) {
                                 <NavLink
                                   className="l extL"
                                   title="Dashboard"
-                                  to={"/dashboard"}
+                                  to={"admin/dashboard"}
                                 >
                                   <bdi>Dashboard</bdi>
                                 </NavLink>
@@ -200,7 +200,7 @@ function Header(props) {
                                 <NavLink
                                   className="l extL"
                                   title="Compose"
-                                  to={"/compose"}
+                                  to={"admin/compose"}
                                 >
                                   <bdi>Compose</bdi>
                                 </NavLink>

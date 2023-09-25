@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import Footer from "../component/Footer";
 import Mobilemenu from "../component/Mobilemenu";
 import Notification from "../component/Notification";
+import { Helmet } from "react-helmet";
 
 function Page() {
+  const url = window.location.href;
   useEffect(() => {
     const bodyClassList = document.body.classList;
     bodyClassList.add("onItm", "onPg");
@@ -11,7 +13,7 @@ function Page() {
       bodyClassList.remove("onItm", "onPg");
     };
   }, []);
-
+const postcontent = {title: "Page||LearnGraduation",discription: "Page||LearnGraduation",image:"https://1.bp.blogspot.com/-1QbuCkPSD0o/YPAlJlLIAYI/AAAAAAAACrI/jW19tm8IzyYBdnHXxfKNzDgs_m48NqS_gCPcBGAYYCw/s250/learngraduationlogo.png"}
   const [message, setmessage] = useState("");
   const messageChange=(event)=>{
     setmessage(event.target.value)
@@ -22,6 +24,31 @@ function Page() {
 
   return (
     <>
+       <Helmet >
+
+<title>{postcontent.title}</title>
+
+<link href={url} rel='canonical'/>
+
+<meta content={postcontent.discription} name='description'/>
+ <meta content={postcontent.keyword ||'Learn Graduation, , learn graduation, learngraduation, learn-graduation ,learn%20graduation'} name='keywords'/>
+
+<meta content={postcontent.title} property='og:title'/>
+<meta content={url} property='og:url'/>
+<meta content='Learn Graduation' property='og:site_name'/>
+<meta content='website' property='og:type'/>
+<meta content={postcontent.discription} property='og:description'/>
+<meta content={postcontent.title} property='og:image:alt'/>
+<meta content={postcontent.image} property='og:image'/>
+
+<meta content={postcontent.title} name='twitter:title'/>
+<meta content={url} name='twitter:url'/>
+<meta content={postcontent.discription} name='twitter:description'/>
+<meta content='summary_large_image' name='twitter:card'/>
+<meta content={postcontent.title} name='twitter:image:alt'/>
+<meta content={postcontent.image} name='twitter:image:src'/>
+
+    </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <Notification />
