@@ -1,30 +1,43 @@
 <html dir="ltr" lang="en">
-
 <head>
-  <title>Learn Graduation</title>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport'/>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+<meta content='max-image-preview:large' name='robots'/>
 
-  <meta charset="UTF-8" />
-  <meta content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
-    name="viewport" />
-  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+<!--[ Generator and rrs ]-->
+<meta content='website' name='generator'/>
+<link href='https://learngraduation.blogspot.com/feeds/posts/default' rel='alternate' title='Learn Graduation Â» Atom' type='application/atom+xml'/>
+<link href='https://learngraduation.blogspot.com/feeds/posts/default?alt=rss' rel='alternate' title='Learn Graduation Â» Feed' type='application/rss+xml'/>
+<link href='https://learngraduation.blogspot.com/feeds/comments/default?alt=rss' rel='alternate' title='Learn Graduation Â» Comments Feed' type='application/rss+xml'/>
+<!--[ Theme Color ]-->
+<meta content='#ff0040' name='theme-color'/>
+<meta content='#ff0040' name='msapplication-navbutton-color'/>
+<meta content='#ff0040' name='apple-mobile-web-app-status-bar-style'/>
+<meta content='true' name='apple-mobile-web-app-capable'/>
+<!--[ Favicon ]-->
+<link href='https://learngraduation.blogspot.com/favicon.ico' rel='apple-touch-icon' sizes='120x120'/>
+<link href='https://learngraduation.blogspot.com/favicon.ico' rel='apple-touch-icon' sizes='152x152'/>
+<link href='https://learngraduation.blogspot.com/favicon.ico' rel='icon' type='image/x-icon'/>
+<link href='https://learngraduation.blogspot.com/favicon.ico' rel='shortcut icon' type='image/x-icon'/>
+<!-- Sife Verification -->
+<meta content='' name='msvalidate.01'/>
+<meta name="google-site-verification" content="pJbqjwwEhEXTN-arUGHkpQEZXUJtS4IQfXs1Ren5KK8" />
+<link rel="stylesheet" href="/css/style.css" />
 
-  <link rel="stylesheet" href="../css/style.css" />
-
-  <!-- <link rel="manifest" href="../manifest.json"> -->
 </head>
 
 <body class="MN-2 mobS hdMn bD" id="mainCont"> 
-  <!--for single page  MN-2 mobS hdMn bD onItm onPg drK -->
-  <!-- for post page   MN-2 mobS hdMn bD onItm onPs -->
-  <!-- oneGrd MN-2 mobS hdMn bD onIndx onMlt drK -->
-  <!--  home class oneGrd MN-2 mobS hdMn bD onIndx onHm -->
   <script>
-    localStorage.getItem("mode") === "darkmode"
-      ? document.querySelector("#mainCont").classList.add("drK")
-      : document.querySelector("#mainCont").classList.remove("drK");
+    const storedMode = localStorage.getItem("mode");
+    if (!storedMode) {
+      localStorage.setItem("mode", window.matchMedia('(prefers-color-scheme: dark)').matches ? 'darkmode' : 'lightmode');
+    }
+
+    // Apply class based on the mode
+    document.querySelector("#mainCont").classList.toggle("drK", localStorage.getItem("mode") === "darkmode");
   </script>
   <div id="root"></div>
-  <script src="../js/script.js"></script>
+  <script src="/js/script.js"></script>
 </body>
-
 </html>
