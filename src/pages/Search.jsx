@@ -4,9 +4,10 @@ import { api, date } from "../Contexts";
 import Notification from "../component/Notification";
 import Footer from "../component/Footer";
 import Mobilemenu from "../component/Mobilemenu";
+import { Helmet } from "react-helmet";
 
 function Search() {
-
+  const url = window.location.href;
   const urlParams = new URLSearchParams(window.location.search);
   const value = urlParams.get('q');
   const [skip, setSkip] = useState(0);
@@ -47,6 +48,31 @@ function Search() {
 
   return (
     <>
+         <Helmet >
+
+<title>{`Search || ${value}`}</title>
+
+<link href={url} rel='canonical'/>
+
+<meta content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" name='description'/>
+ <meta content={postcontent.keyword ||'Learn Graduation, , learn graduation, learngraduation, learn-graduation ,learn%20graduation'} name='keywords'/>
+
+<meta content={`Search || ${value}`} property='og:title'/>
+<meta content={url} property='og:url'/>
+<meta content='Learn Graduation' property='og:site_name'/>
+<meta content='website' property='og:type'/>
+<meta content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" property='og:description'/>
+<meta content={`Search || ${value}`} property='og:image:alt'/>
+<meta content="https://1.bp.blogspot.com/-1QbuCkPSD0o/YPAlJlLIAYI/AAAAAAAACrI/jW19tm8IzyYBdnHXxfKNzDgs_m48NqS_gCPcBGAYYCw/s250/learngraduationlogo.png" property='og:image'/>
+
+<meta content={`Search || ${value}`} name='twitter:title'/>
+<meta content={url} name='twitter:url'/>
+<meta content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" name='twitter:description'/>
+<meta content='summary_large_image' name='twitter:card'/>
+<meta content={`Search || ${value}`} name='twitter:image:alt'/>
+<meta content="https://1.bp.blogspot.com/-1QbuCkPSD0o/YPAlJlLIAYI/AAAAAAAACrI/jW19tm8IzyYBdnHXxfKNzDgs_m48NqS_gCPcBGAYYCw/s250/learngraduationlogo.png" name='twitter:image:src'/>
+
+    </Helmet>
       <div className="blogCont">
         <div className="secIn">
 

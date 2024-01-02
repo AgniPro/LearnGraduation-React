@@ -2026,7 +2026,6 @@ blockquote.s-1::before {
     font-size: 14px;
     font-family: var(--fontB)
 }
-
 .ps table:not(.tr-caption-container) {
     min-width: 90%;
     border: 1px solid var(--contentL);

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Mobilemenu from "../component/Mobilemenu";
 import { api } from "../Contexts";
+import { Helmet } from "react-helmet";
 
 function Compose(props) {
   const [content, setContent] = useState(null);
@@ -56,6 +57,9 @@ function Compose(props) {
   }
   return (
     <>
+    <Helmet>
+      <title>Compose Post || LearnGradution</title>
+     </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <div className="blogM">

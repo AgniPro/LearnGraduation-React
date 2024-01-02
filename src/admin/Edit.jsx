@@ -3,12 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import Mobilemenu from "../component/Mobilemenu";
 import { api } from "../Contexts";
+import { Helmet } from "react-helmet";
 
 function Edit(props) {
   const [homedata, setHomedata] = useState([]);
   const [content, setContent] = useState();
   const location = useLocation();
-  const url = location.pathname.split("/")[2];
+  const url = location.pathname.split("/")[3];
   useEffect(() => {
     const homecontent = async () => {
       const response = await fetch(api+"/p/" + url, {
@@ -57,7 +58,7 @@ function Edit(props) {
     })
       .then((response) => {
         if (response.ok) {
-          navigate("/dashboard");
+          navigate("admin/dashboard");
         }
       })
       .catch((error) => {
@@ -78,6 +79,9 @@ function Edit(props) {
   };
   return (
     <>
+    <Helmet>
+      <title>Edit Post || LearnGradution</title>
+     </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <div className="blogM">

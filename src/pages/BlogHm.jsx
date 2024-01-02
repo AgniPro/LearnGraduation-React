@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { api, date } from "../Contexts";
 import { CardLoading, PinndeLoading } from "../component/CardLodaing";
 import Like from "../component/Like";
+import { Helmet } from "react-helmet";
 
 function BlogHm(props) {
   useEffect(() => {
@@ -66,7 +67,26 @@ function BlogHm(props) {
 
   const { pubinfo, month, year } = date(pinnedPost?.createdAt,pinnedPost?.updatedAt);
 
-  return (
+  return (<>
+      <Helmet>
+    <title>LearnGraduation</title>
+    <link rel="canonical" href="https://learngraduation.web.app/" />
+    <meta name="description" content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" />
+    <meta name="keywords" content='Learn Graduation, , learn graduation, learngraduation, learn-graduation ,learn%20graduation' />
+    <meta property="og:title" content="LearnGradution" />
+    <meta property="og:url" content="https://learngraduation.web.app/"/>
+    <meta property="og:site_name" content='Learn Graduation' />
+    <meta property="og:type" content='website' />
+    <meta property="og:description" content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" />
+    <meta property="og:image:alt" content="LearnGraduation" />
+    <meta property="og:image" content="https://1.bp.blogspot.com/-1QbuCkPSD0o/YPAlJlLIAYI/AAAAAAAACrI/jW19tm8IzyYBdnHXxfKNzDgs_m48NqS_gCPcBGAYYCw/s250/learngraduationlogo.png" />
+    <meta name="twitter:title" content="LearnGraduation" />
+    <meta name="twitter:url" content="https://learngraduation.web.app/" />
+    <meta name="twitter:description" content="Learn Graduation is a source of all required study matterial for degree level students and teacher . Here you will get better study matterial from top" />
+    <meta name="twitter:card" content='summary_large_image' />
+    <meta name="twitter:image:alt" content="LearnGraduation" />
+    <meta name="twitter:image:src" content="https://1.bp.blogspot.com/-1QbuCkPSD0o/YPAlJlLIAYI/AAAAAAAACrI/jW19tm8IzyYBdnHXxfKNzDgs_m48NqS_gCPcBGAYYCw/s250/learngraduationlogo.png" />
+  </Helmet>
     <div className="blogCont">
       <div className="secIn">
         <Notification />
@@ -80,7 +100,7 @@ function BlogHm(props) {
             </div>
           </div>
         </div>
-        <div className="blogM">
+        <div className="blogM"> 
           {/*[ Main content ]*/}
           <main className="blogItm mainbar">
             <Slider />
@@ -230,6 +250,7 @@ function BlogHm(props) {
         <Footer />
       </div>
     </div>
+    </>
   );
 }
 export default BlogHm;

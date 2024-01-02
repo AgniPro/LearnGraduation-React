@@ -9,6 +9,7 @@ import Pcomment from "../component/Pcomment";
 import { api, date } from "../Contexts";
 import InnerHTML from 'dangerously-set-html-content'
 import Like from "../component/Like";
+import {Helmet} from "react-helmet";
 
 function Post(props) {
 
@@ -63,6 +64,25 @@ function Post(props) {
   const { pubinfo, month, year } = date(postcontent?.createdAt,postcontent?.updatedAt);
   return (
     <>
+  <Helmet>
+    <title>{postcontent.title}</title>
+    <link rel="canonical" href={url} />
+    <meta name="description" content={postcontent.discription} />
+    <meta name="keywords" content={postcontent.keyword || 'Learn Graduation, , learn graduation, learngraduation, learn-graduation ,learn%20graduation'} />
+    <meta property="og:title" content={postcontent.title} />
+    <meta property="og:url" content={url} />
+    <meta property="og:site_name" content='Learn Graduation' />
+    <meta property="og:type" content='website' />
+    <meta property="og:description" content={postcontent.discription} />
+    <meta property="og:image:alt" content={postcontent.title} />
+    <meta property="og:image" content={postcontent.image} />
+    <meta name="twitter:title" content={postcontent.title} />
+    <meta name="twitter:url" content={postcontent.url} />
+    <meta name="twitter:description" content={postcontent.discription} />
+    <meta name="twitter:card" content='summary_large_image' />
+    <meta name="twitter:image:alt" content={postcontent.title} />
+    <meta name="twitter:image:src" content={postcontent.image} />
+  </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <Notification />
@@ -91,7 +111,7 @@ function Post(props) {
                           {postcontent.title}
                         </span>
                       </h1>
-                      <div className="pDesc">{postcontent.disc}</div>
+                      <div className="pDesc">{postcontent.discription}</div>
                       <div className="pInf pSml ps">
                         <div className="pIm">
                           <div className="im lazy lazy loaded" data-style="background-image: url(//blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9Ho1_bZ2AEcnrygrJBhFE0R-rvh6flix_59-Kltc3pCjfbW7JQ5wShJHHGZOHVDqh0QG_rYmB59_EQapncVmo4Kzrn7AnyAoU79Yn6mPj1H20fDhTK3ZW9CQr73mG7Q/w40-h40-p-k-no-nu/logo.png)" lazied="true" style={{ backgroundImage: 'url("//blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9Ho1_bZ2AEcnrygrJBhFE0R-rvh6flix_59-Kltc3pCjfbW7JQ5wShJHHGZOHVDqh0QG_rYmB59_EQapncVmo4Kzrn7AnyAoU79Yn6mPj1H20fDhTK3ZW9CQr73mG7Q/w40-h40-p-k-no-nu/logo.png")' }}>

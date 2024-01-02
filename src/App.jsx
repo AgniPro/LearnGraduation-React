@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import { useCookies } from 'react-cookie';
 import Header from "./component/Header";
@@ -21,8 +21,14 @@ import Register from "./auth/Register";
 import Compose from "./admin/Compose";
 import Edit from "./admin/Edit";
 import Search from "./pages/Search";
+import MockTest from "./pages/MockTest";
+import CreateMTques from "./admin/CreateMTques";
+import MockTestResult from "./pages/MockTestResult";
+import AllMockTest from "./mocktest/AllMockTest";
+import Error from "./pages/Error";
 
 function App() {
+  const pageNavigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['refreshToken', 'accessToken']);
   const [user, setuser] = useState("")
   const [loggedIn, setLoggedIn] = useState(!!cookies.accessToken || false);
@@ -32,6 +38,7 @@ function App() {
     if (token) {
       setCookie('refreshToken', token, { path: '/', expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: "none" });
       checkAuth(token);
+      pageNavigate(-1);
     } else {
       checkAuth();
     }
@@ -71,6 +78,7 @@ function App() {
     setLoggedIn(false);
     removeCookie('refreshToken', { path: '/' });
     removeCookie('accessToken', { path: '/' });
+    pageNavigate("/");
   };
 
   const [statusCode, setstatusCode] = useState(null);
@@ -78,12 +86,12 @@ function App() {
 
   return (
     <>
-      <Header darkMode={DarkMode} userstate={loggedIn} logout={handleLogout} user={user} googlelogin={handleGoogleLogin} />
+      <Header darkMode={DarkMode} userstate={loggedIn} logout={handleLogout} user={user} googlelogin={handleGoogleLogin} pageNavigate={pageNavigate} />
       <FloatingMessage statusCode={statusCode} message={message} setMessage={setMessage} />
       <div className="mainIn"><Menu />
         <Routes>
           <Route path="/">
-            <Route index element={<BlogHm user={user} cookies={cookies} setstatusCode={setstatusCode}  setMessage={setMessage}/>} />
+            <Route index element={<BlogHm user={user} cookies={cookies} setstatusCode={setstatusCode} setMessage={setMessage} />} />
             <Route
               path="/login"
               element={
@@ -91,9 +99,10 @@ function App() {
                   <Navigate to="/" />
                 ) : (
                   <Login
-                    login={() => handleLogin(setLoggedIn, setCookie, cookies, setstatusCode, setMessage,setuser)}
+                    login={() => handleLogin(setLoggedIn, setCookie, cookies, setstatusCode, setMessage, setuser,pageNavigate)}
                     googlelogin={handleGoogleLogin}
                     setSessionData={() => setSessionData(setSessionData)}
+                    pageNavigate={pageNavigate}
                   />
                 )
               }
@@ -105,28 +114,28 @@ function App() {
                   <Navigate to="/" />
                 ) : (
                   <Register
-                    googlelogin={handleGoogleLogin} register={() => register(setstatusCode, setMessage)}
+                    googlelogin={handleGoogleLogin} register={() => register(setstatusCode, setMessage,pageNavigate)}
                   />
                 )
               }
             />
             <Route path="/page/:id" element={<Page />} />
-            <Route path="/p/:id" element={<Post cookies={cookies} user={user} loggedIn={loggedIn} setstatusCode={setstatusCode}  setMessage={setMessage}/>} />
-            <Route path="/dashboard" element={
+            <Route path="/p/:id" element={<Post cookies={cookies} user={user} loggedIn={loggedIn} setstatusCode={setstatusCode} setMessage={setMessage} />} />
+            <Route path="admin/dashboard" element={
               loggedIn ? (<Dashboard cookies={cookies} setstatusCode={setstatusCode} setMessage={setMessage} />
               ) : (
                 <Navigate to="/login" />
               )
             }
             />
-            <Route path="/compose" element={
+            <Route path="admin/compose" element={
               loggedIn ? (<Compose cookies={cookies} />
               ) : (
                 <Navigate to="/login" />
               )
             }
             />
-            <Route path="/edit/:id" element={
+            <Route path="admin/edit/:id" element={
               loggedIn ? (<Edit cookies={cookies} />
               ) : (
                 <Navigate to="/login" />
@@ -137,8 +146,34 @@ function App() {
               <Search />
             }
             />
+            <Route path="/mocktest" element={
+              <AllMockTest />
+            }
+            />
+            <Route path="/mocktest/:id" element={
+               loggedIn ? (<MockTest cookies={cookies} user={user} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+            />
+             <Route path="/mocktest-result"
+              element={
+                loggedIn ? (<MockTestResult cookies={cookies} />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+            />
+            <Route path="/create-mocktest"
+              element={
+                loggedIn ? (<CreateMTques cookies={cookies} />
+                ) : (
+                  <Navigate to="/login" />
+                )}
+            />
 
-            <Route path="*" element={"<Error />"} />
+            <Route path="*" element={<Error />} />
           </Route>
         </Routes>
       </div>

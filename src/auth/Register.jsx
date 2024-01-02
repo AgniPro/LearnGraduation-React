@@ -1,7 +1,12 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 function Register(props){
     return(
-     <><div style={{padding:"24px"}} className="widget">
+     <>
+     <Helmet>
+      <title>Register || LearnGradution</title>
+     </Helmet>
+     <div style={{padding:"24px"}} className="widget">
      <label htmlFor="email" >Email</label>
      <input
        type="email"

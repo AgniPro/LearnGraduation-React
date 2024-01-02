@@ -7,7 +7,7 @@ export const DarkMode = () => {
       "drK") : document.querySelector("#mainCont").classList.remove("drK")
 };
 
-export const handleLogin = async (setLoggedIn, setCookie, cookies, setstatusCode, setMessage, setuser) => {
+export const handleLogin = async (setLoggedIn, setCookie, cookies, setstatusCode, setMessage, setuser,pageNavigate) => {
   const username = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
@@ -24,9 +24,12 @@ export const handleLogin = async (setLoggedIn, setCookie, cookies, setstatusCode
   setLoggedIn(data.loggedIn);
   setuser(data.user);
   setstatusCode(response.status);
-  setMessage(data.message || "...");
+  setMessage(data.message || "Somthing went wrong");
   setCookie('refreshToken', data.refreshToken, { path: '/', expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: "none" });
   setCookie('accessToken', data.accessToken, { path: '/', expires: new Date(Date.now() + 60 * 60 * 1000), secure: true, sameSite: "none" });
+  if (data.loggedIn) {
+    pageNavigate(-1);
+  }
 };
 export const register = async (setstatusCode, setMessage) => {
   const username = document.getElementById("email").value;
@@ -46,6 +49,9 @@ export const register = async (setstatusCode, setMessage) => {
   setMessage(data.message || "...");
   if (response.status === 200) {
     window.location.replace('/login');
+  }else if(response.status===500){
+    setstatusCode(response.status);
+    setMessage(data.message || "Internal Server Error");
   }
 };
 

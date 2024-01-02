@@ -3,6 +3,7 @@ import Footer from "../component/Footer";
 import Mobilemenu from "../component/Mobilemenu";
 import { Link, useNavigate } from "react-router-dom";
 import { api, date } from "../Contexts";
+import { Helmet } from "react-helmet";
 
 function Dashboard(props) {
   useEffect(() => {
@@ -37,7 +38,7 @@ function Dashboard(props) {
   };
   const navigate = useNavigate();
   const compose = () => {
-    navigate("/compose");
+    navigate("admin/compose");
   };
   const back = () => {
     navigate(-1);
@@ -62,6 +63,9 @@ function Dashboard(props) {
 
   return (
     <>
+    <Helmet>
+      <title>Dashboard||LearnGradution</title>
+     </Helmet>
       <div className="blogCont">
         <div className="secIn">
           <div className="blogM">
@@ -105,7 +109,7 @@ function Dashboard(props) {
                             🗑️
                           </button>
 
-                          <Link className="button" to={"/edit/" + item.url}> 📝</Link>
+                          <Link className="button" to={"/admin/edit/" + item.url}> 📝</Link>
 
                           <div className="pInf pSml">
                             <time className="aTtmp pTtmp pbl" data-text={`${month}, ${year}`} dateTime={item.updatedAt} title={`${pubinfo} ${month}, ${year}`}/>
